@@ -14,7 +14,7 @@ class HomeContainer extends StatelessWidget {
       future: repository.getAllCardapios(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const HomeLoading();
+          return HomeLoading();
         }
         if (snapshot.hasData &&
             snapshot.connectionState == ConnectionState.done) {

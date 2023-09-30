@@ -26,7 +26,8 @@ class CardapioRepository implements ICardapioRepository {
 
   Future<void> createCardapio(Cardapio item) async {
     try {
-      await dio.post(ApiConsts.createCardapioUrl, queryParameters: item.toMap());
+      await dio.post(ApiConsts.createCardapioUrl,
+          queryParameters: item.toMap());
     } catch (e) {
       throw Exception('Não foi possível cadastrar o cardápio');
     }
