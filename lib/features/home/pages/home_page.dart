@@ -1,4 +1,5 @@
 import 'package:bandecodex/common/model/cardapio.dart';
+import 'package:bandecodex/features/home/pages/widgets/cardapio_item.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,15 +10,15 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: cardapios.length,
-        itemBuilder: (BuildContext context, int index) {
-          // Corrigido: Retornar o widget Text
-          return ListTile(
-            title: Text(cardapios[index].guarnicao),
-          );
-        },
-      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: GridView.count(
+          crossAxisCount: 2, 
+          mainAxisSpacing: 24,
+          crossAxisSpacing: 24,
+          children: cardapios.map((e) => CardapioItem(item: e)).toList(),
+          ),
+      )
     );
   }
 }
