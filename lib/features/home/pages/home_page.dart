@@ -10,15 +10,24 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => print('add'),
+        child: Icon(Icons.add),
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: GridView.count(
-          crossAxisCount: 2, 
-          mainAxisSpacing: 24,
-          crossAxisSpacing: 24,
-          children: cardapios.map((e) => CardapioItem(item: e)).toList(),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
           ),
-      )
+          itemCount: cardapios.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(child: CardapioItem(item: cardapios[index]));
+          },
+        ),
+      ),
     );
   }
 }

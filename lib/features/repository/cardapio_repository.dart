@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:bandecodex/env/api_consts.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-
 import '../../common/model/cardapio.dart';
 
 abstract class ICardapioRepository {
@@ -15,6 +11,7 @@ class CardapioRepository implements ICardapioRepository {
 
   CardapioRepository({required this.dio});
 
+  @override
   Future<List<Cardapio>> getAllCardapios() async {
     try {
       final response = await dio.get(ApiConsts.allCardapioUrl);
@@ -24,6 +21,14 @@ class CardapioRepository implements ICardapioRepository {
       return result;
     } catch (e) {
       throw Exception('Não foi possível carregar os cardápios');
+    }
+  }
+
+  Future<void> createCardapio(Cardapio item) async {
+    try {
+      await dio.post(ApiConsts.createCardapioUrl, queryParameters: item.toMap());
+    } catch (e) {
+      throw Exception('Não foi possível cadastrar o cardápio');
     }
   }
 }
