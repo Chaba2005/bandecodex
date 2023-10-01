@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 class Cardapio {
   DateTime data;
@@ -37,7 +38,7 @@ class Cardapio {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'data': data.millisecondsSinceEpoch,
+      'data': DateFormat('yyyy-MM-dd').format(DateTime.parse(data.toString())),
       'principal': principal,
       'guarnicao': guarnicao,
       'salada': salada,

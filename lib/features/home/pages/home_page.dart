@@ -1,5 +1,8 @@
 import 'package:bandecodex/common/model/cardapio.dart';
+import 'package:bandecodex/features/home/pages/cadastro/cadastro_page.dart';
 import 'package:bandecodex/features/home/pages/widgets/cardapio_item.dart';
+import 'package:bandecodex/features/repository/cardapio_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,7 +14,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => print('add'),
+        onPressed: () => Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return CadastroPage(
+              repository: CardapioRepository(dio: Dio()),
+            );
+          },
+        )),
         child: Icon(Icons.add),
       ),
       body: Padding(

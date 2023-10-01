@@ -74,7 +74,8 @@ class CardapioItem extends StatelessWidget {
                 title: Text('Principal: ${cardapio.principal}'),
               ),
               ListTile(
-                title: Text('Guarnição: ${cardapio.guarnicao}'),
+                title: Text('Guarnição:'),
+                subtitle: Text(item.guarnicao),
               ),
               ListTile(
                 title: Text('Salada: ${cardapio.salada}'),
