@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+
 import 'package:bandecodex/common/model/cardapio.dart';
 import 'package:bandecodex/features/repository/cardapio_repository.dart';
 import 'package:flutter/foundation.dart';
@@ -25,21 +27,29 @@ class _CadastroPageState extends State<CadastroPage> {
   Widget build(BuildContext context) {
     DateTime date = DateTime.now();
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red[900],
+        title: Text("Cadastro de cardápios", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        leading: Icon(Icons.arrow_back, color: Colors.white),
+      ),
       body: Center(
         child: Form(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextFormField(
                   controller: _dateController,
                   readOnly: true,
                   decoration: const InputDecoration(
-                    labelText: 'Date',
+                    labelText: 'Data: ',
                     filled: true,
                     prefixIcon: Icon(Icons.calendar_today),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8))
+                    )
                   ),
                   onTap: () {
                     _selectDate();
@@ -47,30 +57,75 @@ class _CadastroPageState extends State<CadastroPage> {
                 ),
                 TextFormField(
                   controller: _principalController,
+                  decoration: const InputDecoration(
+                    labelText: 'Prato Principal: ',
+                    prefixIcon: Icon(Icons.restaurant),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    )
+                  ),
                 ),
                 TextFormField(
                   controller: _guarnicaoController,
+                  decoration: const InputDecoration(
+                    labelText: 'Guarnição: ',
+                    prefixIcon: Icon(Icons.restaurant),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    )
+                  ),
                 ),
                 TextFormField(
                   controller: _saladaController,
+                  decoration: const InputDecoration(
+                    labelText: 'Salada: ',
+                    prefixIcon: Icon(Icons.restaurant),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    )
+                  ),
                 ),
                 TextFormField(
                   controller: _sobremesaController,
+                  decoration: const InputDecoration(
+                    labelText: 'Sobremesa: ',
+                    prefixIcon: Icon(Icons.restaurant),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    )
+                  ),
                 ),
                 TextFormField(
                   controller: _sucoController,
+                  decoration: const InputDecoration(
+                    labelText: 'Suco: ',
+                    prefixIcon: Icon(Icons.restaurant),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    )
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ToggleButtons(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 80,
-                        child: Center(child: Text('Almoço')),
+                    children: [
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: selectedPeriodo == 0 ? Colors.red[900] : Colors.red[200]
+                        ),
+                        child: SizedBox(
+                          width: 80,
+                          child: Center(child: Text('Almoço', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
+                        ),
                       ),
-                      SizedBox(
-                        width: 80,
-                        child: Center(child: Text('Janta')),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: selectedPeriodo == 1 ? Colors.red[900] : Colors.red[200]
+                        ),
+                        child: SizedBox(
+                          width: 80,
+                          child: Center(child: Text('Janta', style: TextStyle(color:  Colors.white, fontWeight: FontWeight.bold))),
+                        ),
                       ),
                     ],
                     isSelected: [selectedPeriodo == 0, selectedPeriodo == 1],
@@ -85,13 +140,23 @@ class _CadastroPageState extends State<CadastroPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: ToggleButtons(
                     children: <Widget>[
-                      SizedBox(
-                        width: 80,
-                        child: Center(child: Text('Comum')),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: selectedVegetariano == 0 ? Colors.red[900] : Colors.red[200]
+                        ),
+                        child: SizedBox(
+                          width: 80,
+                          child: Center(child: Text('Comum', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+                        ),
                       ),
-                      SizedBox(
-                        width: 80,
-                        child: Center(child: Text('Vegetariano')),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: selectedVegetariano == 1 ? Colors.red[900] : Colors.red[200]
+                        ),
+                        child: SizedBox(
+                          width: 80,
+                          child: Center(child: Text('Vegetariano', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+                        ),
                       ),
                     ],
                     isSelected: [
@@ -105,7 +170,10 @@ class _CadastroPageState extends State<CadastroPage> {
                     },
                   ),
                 ),
-                ElevatedButton(
+                TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red[900]!)
+                    ),
                     onPressed: () {
                       print(_dateController.text);
                       Cardapio item = Cardapio(
@@ -118,8 +186,14 @@ class _CadastroPageState extends State<CadastroPage> {
                           guarnicao: _guarnicaoController.text,
                           sobremesa: _sobremesaController.text);
                       widget.repository.createCardapio(item);
+                      _dateController.clear();
+                      _principalController.clear();
+                      _saladaController.clear();
+                      _sucoController.clear();
+                      _guarnicaoController.clear();
+                      _sobremesaController.clear();
                     },
-                    child: Text('Cadastrar'))
+                    child: Text('Cadastrar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))
               ],
             ),
           ),
