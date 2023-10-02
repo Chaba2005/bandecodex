@@ -1,3 +1,5 @@
+import 'dart:js_interop_unsafe';
+
 import 'package:bandecodex/env/api_consts.dart';
 import 'package:dio/dio.dart';
 import '../../common/model/cardapio.dart';
@@ -5,6 +7,8 @@ import '../../common/model/cardapio.dart';
 abstract class ICardapioRepository {
   Future<List<Cardapio>> getAllCardapios();
   Future<void> createCardapio(Cardapio item);
+  Future<void> updateCardapio(Cardapio item);
+  Future<void> deleteCardapio(int codigo);
 }
 
 class CardapioRepository implements ICardapioRepository {
@@ -42,6 +46,34 @@ class CardapioRepository implements ICardapioRepository {
       }
     } catch (e) {
       throw Exception('Não foi possível cadastrar o cardápio: $e');
+    }
+  }
+
+  Future<void> updateCardapio(Cardapio item) async {
+    try {
+      final response =
+          await dio.put(ApiConsts.createCardapioUrl, data: item.toMap());
+      if (response.statusCode == 200)
+        print('Cardápio alterado com sucesso!');
+      else {
+        throw Exception('Erro ao alterar cardápio: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Não foi possível alterar o cardápio: $e');
+    }
+  }
+
+  Future<void> deleteCardapio(int codigo) async {
+    try {
+      final response =
+          await dio.delete(ApiConsts.createCardapioUrl, data: codigo);
+      if (response.statusCode == 200)
+        print('Cardápio deletado com sucesso!');
+      else {
+        throw Exception('Erro ao deletar cardápio: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Não foi possível deletar o cardápio: $e');
     }
   }
 }

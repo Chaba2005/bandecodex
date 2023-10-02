@@ -6,15 +6,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CadastroPage extends StatefulWidget {
+class EditPage extends StatefulWidget {
   final ICardapioRepository repository;
-  const CadastroPage({super.key, required this.repository});
+  final Cardapio cardapio;
+  const EditPage({super.key, required this.repository, required this.cardapio});
 
   @override
-  State<CadastroPage> createState() => _CadastroPageState();
+  State<EditPage> createState() => _EditPageState();
 }
 
-class _CadastroPageState extends State<CadastroPage> {
+class _EditPageState extends State<EditPage> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _principalController = TextEditingController();
   TextEditingController _guarnicaoController = TextEditingController();
@@ -23,6 +24,22 @@ class _CadastroPageState extends State<CadastroPage> {
   TextEditingController _sucoController = TextEditingController();
   int selectedPeriodo = 0; // Opções de período
   int selectedVegetariano = 1; // Opções vegetarianas
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _dateController.text =
+        DateFormat('yyyy-MM-dd').format(widget.cardapio.data);
+    _principalController.text = widget.cardapio.principal;
+    _guarnicaoController.text = widget.cardapio.guarnicao;
+    _saladaController.text = widget.cardapio.salada;
+    _sobremesaController.text = widget.cardapio.sobremesa;
+    _sucoController.text = widget.cardapio.suco;
+    selectedPeriodo = widget.cardapio.periodo;
+    selectedVegetariano = widget.cardapio.vegetariano;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime date = DateTime.now();
@@ -132,7 +149,7 @@ class _CadastroPageState extends State<CadastroPage> {
                     children: const [
                       SizedBox(
                         width: 80,
-                        child: Center(child: Icon(Icons.restaurant)),
+                        child: Center(child: Icon(Icons.restaurant_menu)),
                       ),
                       SizedBox(
                         width: 80,
@@ -157,6 +174,7 @@ class _CadastroPageState extends State<CadastroPage> {
                     onPressed: () {
                       print(_dateController.text);
                       Cardapio item = Cardapio(
+                          codigo: widget.cardapio.codigo,
                           data: DateTime.parse(_dateController.text),
                           periodo: selectedPeriodo,
                           vegetariano: selectedVegetariano,
@@ -165,21 +183,21 @@ class _CadastroPageState extends State<CadastroPage> {
                           suco: _sucoController.text,
                           guarnicao: _guarnicaoController.text,
                           sobremesa: _sobremesaController.text);
-                      widget.repository.createCardapio(item);
+                      widget.repository.updateCardapio(item);
                       _dateController.clear();
                       _principalController.clear();
                       _saladaController.clear();
                       _sucoController.clear();
                       _guarnicaoController.clear();
                       _sobremesaController.clear();
-                      Navigator.pop(context);
+                      Navigator.pop(context,true);
                     },
                     child: Container(
                         width: 120,
                         height: 40,
                         child: Center(
                             child: Text(
-                          'Cadastrar',
+                          'Alterar',
                           style: TextStyle(fontSize: 16),
                         ))))
               ],

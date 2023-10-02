@@ -18,7 +18,7 @@ class HomeContainer extends StatelessWidget {
         }
         if (snapshot.hasData &&
             snapshot.connectionState == ConnectionState.done) {
-          return HomePage(cardapios: snapshot.data!);
+          return HomePage(cardapios: snapshot.data!, repository: repository,);
         }
 
         if (snapshot.hasError) {
