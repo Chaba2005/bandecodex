@@ -61,39 +61,75 @@ class CardapioItem extends StatelessWidget {
 
   void showCardapioBottomSheet(BuildContext context, Cardapio cardapio) {
     showModalBottomSheet(
+      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
       context: context,
       builder: (BuildContext context) {
         return SingleChildScrollView(
-          child: Column(
-            children: [
-              ListTile(
-                title:
-                    Text('Data: ${cardapio.data.day}/${cardapio.data.month}'),
-              ),
-              ListTile(
-                title: Text('Principal: ${cardapio.principal}'),
-              ),
-              ListTile(
-                title: Text('Guarnição:'),
-                subtitle: Text(item.guarnicao),
-              ),
-              ListTile(
-                title: Text('Salada: ${cardapio.salada}'),
-              ),
-              ListTile(
-                title: Text('Sobremesa: ${cardapio.sobremesa}'),
-              ),
-              ListTile(
-                title: Text('Suco: ${cardapio.suco}'),
-              ),
-              ListTile(
-                title: Text('Período: ${cardapio.periodo}'),
-              ),
-              ListTile(
-                title: Text(
-                    'Vegetariano: ${cardapio.vegetariano == 1 ? 'Sim' : 'Não'}'),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text('Data: '),
+                    ),
+                    Container(
+                      child: Text('Principal: '),
+                    ),
+                    Container(
+                      child: Text('Guarnição:'),
+                    ),
+                    Container(
+                      child: Text('Salada: '),
+                    ),
+                    Container(
+                      child: Text('Sobremesa: '),
+                    ),
+                    Container(
+                      child: Text('Suco: '),
+                    ),
+                    Container(
+                      child: Text('Período: '),
+                    ),
+                    Container(
+                      child: Text('Vegetariano:'),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text(cardapio.data.toString()),
+                    ),
+                    Container(
+                      child: Text(cardapio.principal),
+                    ),
+                    Container(
+                      child: Text(cardapio.guarnicao),
+                    ),
+                    Container(
+                      child: Text(cardapio.salada),
+                    ),
+                    Container(
+                      child: Text(cardapio.sobremesa),
+                    ),
+                    Container(
+                      child: Text(cardapio.suco),
+                    ),
+                    Container(
+                      child: Text(cardapio.periodo.toString()),
+                    ),
+                    Container(
+                      child: Text(cardapio.vegetariano.toString()),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         );
       },

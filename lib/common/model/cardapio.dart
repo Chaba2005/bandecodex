@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 class Cardapio {
+  int? codigo;
   DateTime data;
   String principal;
   String guarnicao;
@@ -15,7 +16,9 @@ class Cardapio {
   int vegetariano;
 
   Cardapio(
-      {required this.data,
+      {
+      this.codigo,
+      required this.data,
       required this.principal,
       required this.guarnicao,
       required this.salada,
@@ -26,6 +29,7 @@ class Cardapio {
 
   factory Cardapio.fromMap(dynamic map) {
     return Cardapio(
+        codigo: map["codigo"] ?? 0,
         data: DateTime.parse(map["data"]),
         principal: map["principal"] ?? "",
         guarnicao: map["guarnicao"] ?? "",
@@ -38,6 +42,7 @@ class Cardapio {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'codigo': codigo,
       'data': DateFormat('yyyy-MM-dd').format(DateTime.parse(data.toString())),
       'principal': principal,
       'guarnicao': guarnicao,
@@ -51,5 +56,6 @@ class Cardapio {
 
   String toJson() => json.encode(toMap());
 
-  factory Cardapio.fromJson(String source) => Cardapio.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Cardapio.fromJson(String source) =>
+      Cardapio.fromMap(json.decode(source) as Map<String, dynamic>);
 }
