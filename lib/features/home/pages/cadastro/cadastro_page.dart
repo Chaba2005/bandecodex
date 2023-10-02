@@ -28,9 +28,13 @@ class _CadastroPageState extends State<CadastroPage> {
     DateTime date = DateTime.now();
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.red[900],
         title: Text("Cadastro de cardápios", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        leading: Icon(Icons.arrow_back, color: Colors.white),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Center(
         child: Form(
@@ -192,6 +196,7 @@ class _CadastroPageState extends State<CadastroPage> {
                       _sucoController.clear();
                       _guarnicaoController.clear();
                       _sobremesaController.clear();
+                      Navigator.pop(context);
                     },
                     child: Text('Cadastrar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))
               ],

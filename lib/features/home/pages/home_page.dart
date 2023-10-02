@@ -13,6 +13,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red[900],
+        centerTitle: true,
+        title: Text("Cardápios", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        automaticallyImplyLeading: false,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(context, MaterialPageRoute(
           builder: (context) {
@@ -21,10 +27,11 @@ class HomePage extends StatelessWidget {
             );
           },
         )),
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: Colors.red[900],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,

@@ -18,42 +18,34 @@ class CardapioItem extends StatelessWidget {
             // Ação a ser executada quando o CardapioItem é pressionado.
             showCardapioBottomSheet(context, item);
           },
-          child: Ink(
+          child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.red, width: 2),
+              borderRadius: BorderRadius.circular(8),
             ),
-            child: Stack(
-              children: [
-                Center(
-                  child: SizedBox(
-                    height: 100,
-                    child: Opacity(
-                      opacity: 0.1,
-                      child: Image.asset('assets/comida.png'),
-                    ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.restaurant),
+                      Text("Cardápio de ${item.data.day}/${item.data.month}/${item.data.year}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    title: Text(
-                      item.guarnicao,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      '${item.data.day}/${item.data.month}',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                  Text(item.vegetariano == 0 ? "Vegetariano" : "Não vegetariano"),
+                  Center(child: Image.asset('assets/fotoComida.png', height: 140,)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("Clique para ver mais", style: TextStyle(fontStyle: FontStyle.italic),)
+                    ],
+                  )
+                ],
+              ),
+            ),  
+          )
         ),
       ),
     );
