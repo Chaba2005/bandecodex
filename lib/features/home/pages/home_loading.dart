@@ -7,7 +7,7 @@ class HomeLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
+        child: Container( 
           height: 400,
           width: 200,
           child: Column(

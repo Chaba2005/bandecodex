@@ -23,6 +23,7 @@ class _CadastroPageState extends State<CadastroPage> {
   TextEditingController _saladaController = TextEditingController();
   TextEditingController _sobremesaController = TextEditingController();
   TextEditingController _sucoController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   int selectedPeriodo = 0; // Opções de período
   int selectedVegetariano = 1; // Opções vegetarianas
   @override
@@ -32,163 +33,213 @@ class _CadastroPageState extends State<CadastroPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.red[900],
-        title: Text("Cadastro de cardápios",
+        title: Text("Cadastro e alteração",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Center(
-        child: Form(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextFormField(
-                  controller: _dateController,
-                  readOnly: true,
-                  decoration: const InputDecoration(
-                      labelText: 'Data: ',
-                      filled: true,
-                      prefixIcon: Icon(Icons.calendar_today),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)))),
-                  onTap: () {
-                    _selectDate();
-                  },
-                ),
-                TextFormField(
-                  controller: _principalController,
-                  decoration: const InputDecoration(
-                      labelText: 'Prato Principal: ',
-                      prefixIcon: Icon(Icons.restaurant),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      )),
-                ),
-                TextFormField(
-                  controller: _guarnicaoController,
-                  decoration: const InputDecoration(
-                      labelText: 'Guarnição: ',
-                      prefixIcon: Icon(Icons.restaurant),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      )),
-                ),
-                TextFormField(
-                  controller: _saladaController,
-                  decoration: const InputDecoration(
-                      labelText: 'Salada: ',
-                      prefixIcon: Icon(Icons.restaurant),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      )),
-                ),
-                TextFormField(
-                  controller: _sobremesaController,
-                  decoration: const InputDecoration(
-                      labelText: 'Sobremesa: ',
-                      prefixIcon: Icon(Icons.restaurant),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      )),
-                ),
-                TextFormField(
-                  controller: _sucoController,
-                  decoration: const InputDecoration(
-                      labelText: 'Suco: ',
-                      prefixIcon: Icon(Icons.restaurant),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: ToggleButtons(
-                    children: const [
-                      SizedBox(
-                        width: 80,
-                        child: Center(
-                          child: Icon(Icons.sunny),
-                        ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Form(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: _dateController,
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                          labelText: 'Data: ',
+                          filled: true,
+                          prefixIcon: Icon(Icons.calendar_today),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(8)))),
+                      onTap: () {
+                        _selectDate();
+                      },
+                      validator: (value){
+                        if(value!.isEmpty){
+                          return "Campo obrigatório";
+                        }else{
+                          return null; 
+                        }
+                      },
+                    ),
+                    TextFormField(
+                      controller: _principalController,
+                      decoration: const InputDecoration(
+                          labelText: 'Prato Principal: ',
+                          prefixIcon: Icon(Icons.restaurant),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          )),
+                      validator: (value){
+                        if(value!.isEmpty){
+                          return "Campo obrigatório";
+                        }else{
+                          return null; 
+                        }
+                      },
+                    ),
+                    TextFormField(
+                      controller: _guarnicaoController,
+                      decoration: const InputDecoration(
+                          labelText: 'Guarnição: ',
+                          prefixIcon: Icon(Icons.restaurant),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          )),
+                      validator: (value){
+                        if(value!.isEmpty){
+                          return "Campo obrigatório";
+                        }else{
+                          return null; 
+                        }
+                      },
+                    ),
+                    TextFormField(
+                      controller: _saladaController,
+                      decoration: const InputDecoration(
+                          labelText: 'Salada: ',
+                          prefixIcon: Icon(Icons.restaurant),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          )),
+                      validator: (value){
+                        if(value!.isEmpty){
+                          return "Campo obrigatório";
+                        }else{
+                          return null; 
+                        }
+                      },
+                    ),
+                    TextFormField(
+                      controller: _sobremesaController,
+                      decoration: const InputDecoration(
+                          labelText: 'Sobremesa: ',
+                          prefixIcon: Icon(Icons.restaurant),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          )),
+                      validator: (value){
+                        if(value!.isEmpty){
+                          return "Campo obrigatório";
+                        }else{
+                          return null; 
+                        }
+                      },
+                    ),
+                    TextFormField(
+                      controller: _sucoController,
+                      decoration: const InputDecoration(
+                          labelText: 'Suco: ',
+                          prefixIcon: Icon(Icons.restaurant),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          )),
+                      validator: (value){
+                        if(value!.isEmpty){
+                          return "Campo obrigatório";
+                        }else{
+                          return null; 
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ToggleButtons(
+                        children: const [
+                          SizedBox(
+                            width: 80,
+                            child: Center(
+                              child: Icon(Icons.sunny),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 80,
+                            child: Center(child: Icon(Icons.nightlight)),
+                          ),
+                        ],
+                        isSelected: [selectedPeriodo == 0, selectedPeriodo == 1],
+                        onPressed: (int index) {
+                          setState(() {
+                            selectedPeriodo = index;
+                          });
+                        },
                       ),
-                      SizedBox(
-                        width: 80,
-                        child: Center(child: Icon(Icons.nightlight)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ToggleButtons(
+                        children: const [
+                          SizedBox(
+                            width: 80,
+                            child: Center(child: Icon(Icons.restaurant)),
+                          ),
+                          SizedBox(
+                            width: 80,
+                            child: Center(child: Icon(Icons.eco)),
+                          ),
+                        ],
+                        isSelected: [
+                          selectedVegetariano == 0,
+                          selectedVegetariano == 1
+                        ],
+                        onPressed: (int index) {
+                          setState(() {
+                            selectedVegetariano = index;
+                          });
+                        },
                       ),
-                    ],
-                    isSelected: [selectedPeriodo == 0, selectedPeriodo == 1],
-                    onPressed: (int index) {
-                      setState(() {
-                        selectedPeriodo = index;
-                      });
-                    },
-                  ),
+                    ),
+                    FilledButton(
+                        style: FilledButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5))),
+                        onPressed: ()  {
+                          if(formKey.currentState!.validate()){
+                            print(_dateController.text);
+                            Cardapio item = Cardapio(
+                                data: DateTime.parse(_dateController.text),
+                                periodo: selectedPeriodo,
+                                vegetariano: selectedVegetariano,
+                                principal: _principalController.text,
+                                salada: _saladaController.text,
+                                suco: _sucoController.text,
+                                guarnicao: _guarnicaoController.text,
+                                sobremesa: _sobremesaController.text);
+                            widget.repository.createCardapio(item).then((value) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeContainer(),
+                                ));
+                            });
+                            _dateController.clear();
+                            _principalController.clear();
+                            _saladaController.clear();
+                            _sucoController.clear();
+                            _guarnicaoController.clear();
+                            _sobremesaController.clear();
+                          }
+                        },
+                        child: Container(
+                            width: 120,
+                            height: 40,
+                            child: Center(
+                                child: Text(
+                              'Cadastrar',
+                              style: TextStyle(fontSize: 16),
+                            ))))
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: ToggleButtons(
-                    children: const [
-                      SizedBox(
-                        width: 80,
-                        child: Center(child: Icon(Icons.restaurant)),
-                      ),
-                      SizedBox(
-                        width: 80,
-                        child: Center(child: Icon(Icons.eco)),
-                      ),
-                    ],
-                    isSelected: [
-                      selectedVegetariano == 0,
-                      selectedVegetariano == 1
-                    ],
-                    onPressed: (int index) {
-                      setState(() {
-                        selectedVegetariano = index;
-                      });
-                    },
-                  ),
-                ),
-                FilledButton(
-                    style: FilledButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5))),
-                    onPressed: () async {
-                      print(_dateController.text);
-                      Cardapio item = Cardapio(
-                          data: DateTime.parse(_dateController.text),
-                          periodo: selectedPeriodo,
-                          vegetariano: selectedVegetariano,
-                          principal: _principalController.text,
-                          salada: _saladaController.text,
-                          suco: _sucoController.text,
-                          guarnicao: _guarnicaoController.text,
-                          sobremesa: _sobremesaController.text);
-                      await widget.repository.createCardapio(item);
-                      _dateController.clear();
-                      _principalController.clear();
-                      _saladaController.clear();
-                      _sucoController.clear();
-                      _guarnicaoController.clear();
-                      _sobremesaController.clear();
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeContainer(),
-                          ));
-                    },
-                    child: Container(
-                        width: 120,
-                        height: 40,
-                        child: Center(
-                            child: Text(
-                          'Cadastrar',
-                          style: TextStyle(fontSize: 16),
-                        ))))
-              ],
+              ),
             ),
           ),
         ),

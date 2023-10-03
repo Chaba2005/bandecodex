@@ -44,97 +44,131 @@ class _CardapioItemState extends State<CardapioItem> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) {
-                                    return EditPage(
-                                      repository:
-                                          CardapioRepository(dio: Dio()),
-                                      cardapio: widget.item,
-                                    );
+                            PopupMenuButton(itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(child: Text('Edit'),
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                        return EditPage(repository: widget.repository, cardapio: widget.item);
+                                      },));
+                                    },
+                                  ),
+                                  PopupMenuItem(child: Text('Delete'),
+                                  onTap: (){
+                                    widget.repository.deleteCardapio(widget.item).then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                      return HomeContainer();
+                                    },)) );
                                   },
-                                ));
-                              },
-                              icon: Icon(Icons.edit),
-                            ),
-                            IconButton(
-                                onPressed: () async {
-                                  await widget.repository
-                                      .deleteCardapio(widget.item);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => HomeContainer(),
-                                      ));
-                                },
-                                icon: Icon(Icons.remove)),
+                                  ),
+                                ];
+                              },),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Text('Data: '),
-                                ),
-                                Container(
-                                  child: Text('Principal: '),
-                                ),
-                                Container(
-                                  child: Text('Guarnição:'),
-                                ),
-                                Container(
-                                  child: Text('Salada: '),
-                                ),
-                                Container(
-                                  child: Text('Sobremesa: '),
-                                ),
-                                Container(
-                                  child: Text('Suco: '),
-                                ),
-                                Container(
-                                  child: Text('Período: '),
-                                ),
-                                Container(
-                                  child: Text('Vegetariano:'),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Text(widget.item.data.toString()),
-                                ),
-                                Container(
-                                  child: Text(widget.item.principal),
-                                ),
-                                Container(
-                                  child: Text(widget.item.guarnicao),
-                                ),
-                                Container(
-                                  child: Text(widget.item.salada),
-                                ),
-                                Container(
-                                  child: Text(widget.item.sobremesa),
-                                ),
-                                Container(
-                                  child: Text(widget.item.suco),
-                                ),
-                                Container(
-                                  child: Text(widget.item.periodo.toString()),
-                                ),
-                                Container(
-                                  child:
-                                      Text(widget.item.vegetariano.toString()),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //Data
+                              Row(
+                                children: [
+                                  const ContainerHead(
+                                    text: 'Data:',
+                                  ),
+                                  const SizedBox(width: 50,),
+                                  Container(
+                                    child: Text(DateFormat('dd/MM/yy').format(widget.item.data)),
+                                  ),
+                                ],
+                              ),
+                              //Prato principal
+                              Row(
+                                children: [
+                                  const ContainerHead(
+                                    text: 'Prato principal :',
+                                  ),
+                                  const SizedBox(width: 50,),
+                                  Container(
+                                    child: Text(widget.item.principal),
+                                  ),
+                                ],
+                              ),
+                              //Guarnição
+                              Row(
+                                children: [
+                                  const ContainerHead(
+                                    text: 'Guarnição :',
+                                  ),
+                                  const SizedBox(width: 50,),
+                                  Container(
+                                    child: Text(widget.item.guarnicao),
+                                  ),
+                                ],
+                              ),
+                              //Salada
+                              Row(
+                                children: [
+                                  const ContainerHead(
+                                    text: 'Salada :',
+                                  ),
+                                  const SizedBox(width: 50,),
+                                  Container(
+                                    child: Text(widget.item.salada),
+                                  ),
+                                ],
+                              ),
+                              //Sobremesa
+                              Row(
+                                children: [
+                                  const ContainerHead(
+                                    text: 'Sobremesa :',
+                                  ),
+                                  const SizedBox(width: 50,),
+                                  Container(
+                                    child: Text(widget.item.sobremesa),
+                                  ),
+                                ],
+                              ),
+                              //Suco
+                              Row(
+                                children: [
+                                  const ContainerHead(
+                                    text: 'Suco :',
+                                  ),
+                                  const SizedBox(width: 50,),
+                                  Container(
+                                    child: Text(widget.item.suco),
+                                  ),
+                                ],
+                              ),
+                              //Período
+                              Row(
+                                children: [
+                                  const ContainerHead(
+                                    text: 'Período :',
+                                  ),
+                                  const SizedBox(width: 50,),
+                                  Container(
+                                    child: Text(widget.item.periodo == 0 ? "Almoço" : "Janta"),
+                                  ),
+                                ],
+                              ),
+                              //Vegetariano
+                              Row(
+                                children: [
+                                  const ContainerHead(
+                                    text: 'Vegetariano :',
+                                  ),
+                                  const SizedBox(width: 50,),
+                                  Container(
+                                    child: Text(widget.item.vegetariano == 0 ? "Vegetariano" : "Não vegetariano"),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -178,6 +212,7 @@ class _CardapioItemState extends State<CardapioItem> {
                                   fontSize: 16,
                                 ),
                               ),
+                              
                             ],
                           ),
                           Text(widget.item.vegetariano == 0
@@ -206,4 +241,19 @@ class _CardapioItemState extends State<CardapioItem> {
   }
 
   void showCardapioBottomSheet(BuildContext context, Cardapio cardapio) {}
+  
 }
+
+class ContainerHead extends StatelessWidget {
+  final text;
+  const ContainerHead({super.key,required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width *0.3,
+      child: Text(text,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+    );
+  }
+}
+

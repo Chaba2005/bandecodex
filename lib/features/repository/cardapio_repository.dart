@@ -1,5 +1,3 @@
-import 'dart:js_interop_unsafe';
-
 import 'package:bandecodex/env/api_consts.dart';
 import 'package:dio/dio.dart';
 import '../../common/model/cardapio.dart';
