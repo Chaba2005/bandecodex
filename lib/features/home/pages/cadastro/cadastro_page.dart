@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
 import 'package:bandecodex/common/model/cardapio.dart';
+import 'package:bandecodex/features/home/container/home_container.dart';
 import 'package:bandecodex/features/repository/cardapio_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -154,7 +156,7 @@ class _CadastroPageState extends State<CadastroPage> {
                     style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5))),
-                    onPressed: () {
+                    onPressed: () async {
                       print(_dateController.text);
                       Cardapio item = Cardapio(
                           data: DateTime.parse(_dateController.text),
@@ -165,14 +167,18 @@ class _CadastroPageState extends State<CadastroPage> {
                           suco: _sucoController.text,
                           guarnicao: _guarnicaoController.text,
                           sobremesa: _sobremesaController.text);
-                      widget.repository.createCardapio(item);
+                      await widget.repository.createCardapio(item);
                       _dateController.clear();
                       _principalController.clear();
                       _saladaController.clear();
                       _sucoController.clear();
                       _guarnicaoController.clear();
                       _sobremesaController.clear();
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeContainer(),
+                          ));
                     },
                     child: Container(
                         width: 120,

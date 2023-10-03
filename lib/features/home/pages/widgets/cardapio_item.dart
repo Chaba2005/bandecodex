@@ -1,3 +1,4 @@
+import 'package:bandecodex/features/home/container/home_container.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
@@ -6,18 +7,17 @@ import 'package:bandecodex/features/home/pages/edit/edit_page.dart';
 import 'package:bandecodex/features/repository/cardapio_repository.dart';
 
 class CardapioItem extends StatefulWidget {
-
+  final ICardapioRepository repository;
   final Cardapio item;
 
-  CardapioItem({Key? key, required this.item}) : super(key: key);
+  CardapioItem({Key? key, required this.item, required this.repository})
+      : super(key: key);
 
   @override
   _CardapioItemState createState() => _CardapioItemState();
 }
 
 class _CardapioItemState extends State<CardapioItem> {
-
-  
   @override
   Widget build(BuildContext context) {
     // O código da construção do widget permanece o mesmo
@@ -29,105 +29,119 @@ class _CardapioItemState extends State<CardapioItem> {
         child: InkWell(
           onTap: () {
             showModalBottomSheet(
-      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) {
-                            return EditPage(
-                              repository: CardapioRepository(dio: Dio()),
-                              cardapio: widget.item,
-                            );
-                          },
-                        ));
-                      },
-                      icon: Icon(Icons.edit),
-                    ),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              constraints:
+                  BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+              context: context,
+              builder: (BuildContext context) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Container(
-                          child: Text('Data: '),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return EditPage(
+                                      repository:
+                                          CardapioRepository(dio: Dio()),
+                                      cardapio: widget.item,
+                                    );
+                                  },
+                                ));
+                              },
+                              icon: Icon(Icons.edit),
+                            ),
+                            IconButton(
+                                onPressed: () async {
+                                  await widget.repository
+                                      .deleteCardapio(widget.item);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HomeContainer(),
+                                      ));
+                                },
+                                icon: Icon(Icons.remove)),
+                          ],
                         ),
-                        Container(
-                          child: Text('Principal: '),
-                        ),
-                        Container(
-                          child: Text('Guarnição:'),
-                        ),
-                        Container(
-                          child: Text('Salada: '),
-                        ),
-                        Container(
-                          child: Text('Sobremesa: '),
-                        ),
-                        Container(
-                          child: Text('Suco: '),
-                        ),
-                        Container(
-                          child: Text('Período: '),
-                        ),
-                        Container(
-                          child: Text('Vegetariano:'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Text('Data: '),
+                                ),
+                                Container(
+                                  child: Text('Principal: '),
+                                ),
+                                Container(
+                                  child: Text('Guarnição:'),
+                                ),
+                                Container(
+                                  child: Text('Salada: '),
+                                ),
+                                Container(
+                                  child: Text('Sobremesa: '),
+                                ),
+                                Container(
+                                  child: Text('Suco: '),
+                                ),
+                                Container(
+                                  child: Text('Período: '),
+                                ),
+                                Container(
+                                  child: Text('Vegetariano:'),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Text(widget.item.data.toString()),
+                                ),
+                                Container(
+                                  child: Text(widget.item.principal),
+                                ),
+                                Container(
+                                  child: Text(widget.item.guarnicao),
+                                ),
+                                Container(
+                                  child: Text(widget.item.salada),
+                                ),
+                                Container(
+                                  child: Text(widget.item.sobremesa),
+                                ),
+                                Container(
+                                  child: Text(widget.item.suco),
+                                ),
+                                Container(
+                                  child: Text(widget.item.periodo.toString()),
+                                ),
+                                Container(
+                                  child:
+                                      Text(widget.item.vegetariano.toString()),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Text(widget.item.data.toString()),
-                        ),
-                        Container(
-                          child: Text(widget.item.principal),
-                        ),
-                        Container(
-                          child: Text(widget.item.guarnicao),
-                        ),
-                        Container(
-                          child: Text(widget.item.salada),
-                        ),
-                        Container(
-                          child: Text(widget.item.sobremesa),
-                        ),
-                        Container(
-                          child: Text(widget.item.suco),
-                        ),
-                        Container(
-                          child: Text(widget.item.periodo.toString()),
-                        ),
-                        Container(
-                          child: Text(widget.item.vegetariano.toString()),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );;
+                  ),
+                );
+              },
+            );
+            ;
           },
           child: DecoratedBox(
             decoration: BoxDecoration(
@@ -191,7 +205,5 @@ class _CardapioItemState extends State<CardapioItem> {
     );
   }
 
-  void showCardapioBottomSheet(BuildContext context, Cardapio cardapio) {
-    
-  }
+  void showCardapioBottomSheet(BuildContext context, Cardapio cardapio) {}
 }

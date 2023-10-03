@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
 import 'package:bandecodex/common/model/cardapio.dart';
+import 'package:bandecodex/features/home/container/home_container.dart';
 import 'package:bandecodex/features/repository/cardapio_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -171,7 +173,7 @@ class _EditPageState extends State<EditPage> {
                     style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5))),
-                    onPressed: () {
+                    onPressed: () async {
                       print(_dateController.text);
                       Cardapio item = Cardapio(
                           codigo: widget.cardapio.codigo,
@@ -183,14 +185,18 @@ class _EditPageState extends State<EditPage> {
                           suco: _sucoController.text,
                           guarnicao: _guarnicaoController.text,
                           sobremesa: _sobremesaController.text);
-                      widget.repository.updateCardapio(item);
+                      await widget.repository.updateCardapio(item);
                       _dateController.clear();
                       _principalController.clear();
                       _saladaController.clear();
                       _sucoController.clear();
                       _guarnicaoController.clear();
                       _sobremesaController.clear();
-                      Navigator.pop(context,true);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeContainer(),
+                          ));
                     },
                     child: Container(
                         width: 120,

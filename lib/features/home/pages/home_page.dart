@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => Navigator.push(context, MaterialPageRoute(
           builder: (context) {
             return CadastroPage(
-              repository: CardapioRepository(dio: Dio()),
+              repository: widget.repository,
             );
           },
         )),
@@ -49,7 +49,10 @@ class _HomePageState extends State<HomePage> {
           itemCount: widget.cardapios.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-                child: CardapioItem(item: widget.cardapios[index]));
+                child: CardapioItem(
+              item: widget.cardapios[index],
+              repository: widget.repository,
+            ));
           },
         ),
       ),

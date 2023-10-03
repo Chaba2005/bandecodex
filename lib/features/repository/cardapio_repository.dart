@@ -8,7 +8,7 @@ abstract class ICardapioRepository {
   Future<List<Cardapio>> getAllCardapios();
   Future<void> createCardapio(Cardapio item);
   Future<void> updateCardapio(Cardapio item);
-  Future<void> deleteCardapio(int codigo);
+  Future<void> deleteCardapio(Cardapio item);
 }
 
 class CardapioRepository implements ICardapioRepository {
@@ -23,6 +23,7 @@ class CardapioRepository implements ICardapioRepository {
       if (response.statusCode == 200) {
         final cardapios = response.data as List<dynamic>;
         final result = cardapios.map((e) => Cardapio.fromMap(e)).toList();
+        print(result.first.toMap());
         return result;
       } else {
         throw Exception('Erro na requisição: ${response.statusCode}');
@@ -63,10 +64,11 @@ class CardapioRepository implements ICardapioRepository {
     }
   }
 
-  Future<void> deleteCardapio(int codigo) async {
+  Future<void> deleteCardapio(Cardapio item) async {
+    print(item.codigo);
     try {
       final response =
-          await dio.delete(ApiConsts.createCardapioUrl, data: codigo);
+          await dio.delete(ApiConsts.createCardapioUrl, data: item.toMap());
       if (response.statusCode == 200)
         print('Cardápio deletado com sucesso!');
       else {
