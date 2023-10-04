@@ -7,10 +7,9 @@ import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
-  final ICardapioRepository repository;
   final List<Cardapio> cardapios;
 
-  HomePage({Key? key, required this.cardapios, required this.repository})
+  HomePage({Key? key, required this.cardapios})
       : super(key: key);
 
   @override
@@ -50,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => Navigator.push(context, MaterialPageRoute(
           builder: (context) {
             return CadastroPage(
-              repository: widget.repository,
+
             );
           },
         )),
@@ -97,7 +96,6 @@ class _HomePageState extends State<HomePage> {
                   return GestureDetector(
                       child: CardapioItem(
                     item: busca[index],
-                    repository: widget.repository,
                   ));
                 },
               ),

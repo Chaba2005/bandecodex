@@ -1,17 +1,18 @@
 import 'package:bandecodex/features/home/container/home_container.dart';
+import 'package:bandecodex/features/repository/cardapio_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import 'package:bandecodex/common/model/cardapio.dart';
 import 'package:bandecodex/features/home/pages/edit/edit_page.dart';
 import 'package:bandecodex/features/repository/cardapio_repository.dart';
+import 'package:provider/provider.dart';
 
 class CardapioItem extends StatefulWidget {
-  final ICardapioRepository repository;
+  late CardapioProvider repository;
   final Cardapio item;
 
-  CardapioItem({Key? key, required this.item, required this.repository})
-      : super(key: key);
+  CardapioItem({Key? key, required this.item}) : super(key: key);
 
   @override
   _CardapioItemState createState() => _CardapioItemState();
@@ -19,7 +20,14 @@ class CardapioItem extends StatefulWidget {
 
 class _CardapioItemState extends State<CardapioItem> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    widget.repository = context.watch<CardapioProvider>();
     // O código da construção do widget permanece o mesmo
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -44,24 +52,31 @@ class _CardapioItemState extends State<CardapioItem> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            PopupMenuButton(itemBuilder: (context) {
+                            PopupMenuButton(
+                              itemBuilder: (context) {
                                 return [
-                                  PopupMenuItem(child: Text('Edit'),
-                                    onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                        return EditPage(repository: widget.repository, cardapio: widget.item);
-                                      },));
+                                  PopupMenuItem(
+                                    child: Text('Edit'),
+                                    onTap: () {
+                                      Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) {
+                                          return EditPage(
+                                              cardapio: widget.item);
+                                        },
+                                      ));
                                     },
                                   ),
-                                  PopupMenuItem(child: Text('Delete'),
-                                  onTap: (){
-                                    widget.repository.deleteCardapio(widget.item).then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                                      return HomeContainer();
-                                    },)) );
-                                  },
+                                  PopupMenuItem(
+                                    child: Text('Delete'),
+                                    onTap: () {
+                                      widget.repository
+                                          .deleteCardapio(widget.item);
+                                      Navigator.pop(context);
+                                    },
                                   ),
                                 ];
-                              },),
+                              },
+                            ),
                           ],
                         ),
                         Padding(
@@ -76,9 +91,12 @@ class _CardapioItemState extends State<CardapioItem> {
                                   const ContainerHead(
                                     text: 'Data:',
                                   ),
-                                  const SizedBox(width: 50,),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Container(
-                                    child: Text(DateFormat('dd/MM/yy').format(widget.item.data)),
+                                    child: Text(DateFormat('dd/MM/yy')
+                                        .format(widget.item.data)),
                                   ),
                                 ],
                               ),
@@ -88,7 +106,9 @@ class _CardapioItemState extends State<CardapioItem> {
                                   const ContainerHead(
                                     text: 'Prato principal :',
                                   ),
-                                  const SizedBox(width: 50,),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Container(
                                     child: Text(widget.item.principal),
                                   ),
@@ -100,7 +120,9 @@ class _CardapioItemState extends State<CardapioItem> {
                                   const ContainerHead(
                                     text: 'Guarnição :',
                                   ),
-                                  const SizedBox(width: 50,),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Container(
                                     child: Text(widget.item.guarnicao),
                                   ),
@@ -112,7 +134,9 @@ class _CardapioItemState extends State<CardapioItem> {
                                   const ContainerHead(
                                     text: 'Salada :',
                                   ),
-                                  const SizedBox(width: 50,),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Container(
                                     child: Text(widget.item.salada),
                                   ),
@@ -124,7 +148,9 @@ class _CardapioItemState extends State<CardapioItem> {
                                   const ContainerHead(
                                     text: 'Sobremesa :',
                                   ),
-                                  const SizedBox(width: 50,),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Container(
                                     child: Text(widget.item.sobremesa),
                                   ),
@@ -136,7 +162,9 @@ class _CardapioItemState extends State<CardapioItem> {
                                   const ContainerHead(
                                     text: 'Suco :',
                                   ),
-                                  const SizedBox(width: 50,),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Container(
                                     child: Text(widget.item.suco),
                                   ),
@@ -148,9 +176,13 @@ class _CardapioItemState extends State<CardapioItem> {
                                   const ContainerHead(
                                     text: 'Período :',
                                   ),
-                                  const SizedBox(width: 50,),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Container(
-                                    child: Text(widget.item.periodo == 0 ? "Almoço" : "Janta"),
+                                    child: Text(widget.item.periodo == 0
+                                        ? "Almoço"
+                                        : "Janta"),
                                   ),
                                 ],
                               ),
@@ -160,9 +192,13 @@ class _CardapioItemState extends State<CardapioItem> {
                                   const ContainerHead(
                                     text: 'Vegetariano :',
                                   ),
-                                  const SizedBox(width: 50,),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Container(
-                                    child: Text(widget.item.vegetariano == 0 ? "Vegetariano" : "Não vegetariano"),
+                                    child: Text(widget.item.vegetariano == 0
+                                        ? "Vegetariano"
+                                        : "Não vegetariano"),
                                   ),
                                 ],
                               ),
@@ -212,7 +248,6 @@ class _CardapioItemState extends State<CardapioItem> {
                                   fontSize: 16,
                                 ),
                               ),
-                              
                             ],
                           ),
                           Text(widget.item.vegetariano == 0
@@ -241,19 +276,20 @@ class _CardapioItemState extends State<CardapioItem> {
   }
 
   void showCardapioBottomSheet(BuildContext context, Cardapio cardapio) {}
-  
 }
 
 class ContainerHead extends StatelessWidget {
   final text;
-  const ContainerHead({super.key,required this.text});
+  const ContainerHead({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width *0.3,
-      child: Text(text,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+      width: MediaQuery.of(context).size.width * 0.3,
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
-

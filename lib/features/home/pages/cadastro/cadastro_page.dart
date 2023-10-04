@@ -2,21 +2,23 @@
 
 import 'package:bandecodex/common/model/cardapio.dart';
 import 'package:bandecodex/features/home/container/home_container.dart';
+import 'package:bandecodex/features/repository/cardapio_provider.dart';
 import 'package:bandecodex/features/repository/cardapio_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CadastroPage extends StatefulWidget {
-  final ICardapioRepository repository;
-  const CadastroPage({super.key, required this.repository});
+  CadastroPage({super.key});
 
   @override
   State<CadastroPage> createState() => _CadastroPageState();
 }
 
 class _CadastroPageState extends State<CadastroPage> {
+  late CardapioProvider repository;
   TextEditingController _dateController = TextEditingController();
   TextEditingController _principalController = TextEditingController();
   TextEditingController _guarnicaoController = TextEditingController();
@@ -25,9 +27,18 @@ class _CadastroPageState extends State<CadastroPage> {
   TextEditingController _sucoController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   int selectedPeriodo = 0; // Opções de período
-  int selectedVegetariano = 1; // Opções vegetarianas
+  int selectedVegetariano = 1;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  } // Opções vegetarianas
+
   @override
   Widget build(BuildContext context) {
+    repository = context.watch<CardapioProvider>();
     DateTime date = DateTime.now();
     return Scaffold(
       appBar: AppBar(
@@ -59,15 +70,16 @@ class _CadastroPageState extends State<CadastroPage> {
                           filled: true,
                           prefixIcon: Icon(Icons.calendar_today),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(8)))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)))),
                       onTap: () {
                         _selectDate();
                       },
-                      validator: (value){
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "Campo obrigatório";
-                        }else{
-                          return null; 
+                        } else {
+                          return null;
                         }
                       },
                     ),
@@ -79,11 +91,11 @@ class _CadastroPageState extends State<CadastroPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                           )),
-                      validator: (value){
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "Campo obrigatório";
-                        }else{
-                          return null; 
+                        } else {
+                          return null;
                         }
                       },
                     ),
@@ -95,11 +107,11 @@ class _CadastroPageState extends State<CadastroPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                           )),
-                      validator: (value){
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "Campo obrigatório";
-                        }else{
-                          return null; 
+                        } else {
+                          return null;
                         }
                       },
                     ),
@@ -111,11 +123,11 @@ class _CadastroPageState extends State<CadastroPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                           )),
-                      validator: (value){
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "Campo obrigatório";
-                        }else{
-                          return null; 
+                        } else {
+                          return null;
                         }
                       },
                     ),
@@ -127,11 +139,11 @@ class _CadastroPageState extends State<CadastroPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                           )),
-                      validator: (value){
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "Campo obrigatório";
-                        }else{
-                          return null; 
+                        } else {
+                          return null;
                         }
                       },
                     ),
@@ -143,11 +155,11 @@ class _CadastroPageState extends State<CadastroPage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                           )),
-                      validator: (value){
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "Campo obrigatório";
-                        }else{
-                          return null; 
+                        } else {
+                          return null;
                         }
                       },
                     ),
@@ -166,7 +178,10 @@ class _CadastroPageState extends State<CadastroPage> {
                             child: Center(child: Icon(Icons.nightlight)),
                           ),
                         ],
-                        isSelected: [selectedPeriodo == 0, selectedPeriodo == 1],
+                        isSelected: [
+                          selectedPeriodo == 0,
+                          selectedPeriodo == 1
+                        ],
                         onPressed: (int index) {
                           setState(() {
                             selectedPeriodo = index;
@@ -202,8 +217,8 @@ class _CadastroPageState extends State<CadastroPage> {
                         style: FilledButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5))),
-                        onPressed: ()  {
-                          if(formKey.currentState!.validate()){
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
                             print(_dateController.text);
                             Cardapio item = Cardapio(
                                 data: DateTime.parse(_dateController.text),
@@ -214,13 +229,8 @@ class _CadastroPageState extends State<CadastroPage> {
                                 suco: _sucoController.text,
                                 guarnicao: _guarnicaoController.text,
                                 sobremesa: _sobremesaController.text);
-                            widget.repository.createCardapio(item).then((value) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomeContainer(),
-                                ));
-                            });
+                            repository.createCardapio(item);
+                            Navigator.pop(context);
                             _dateController.clear();
                             _principalController.clear();
                             _saladaController.clear();

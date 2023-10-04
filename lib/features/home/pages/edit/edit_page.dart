@@ -2,22 +2,24 @@
 
 import 'package:bandecodex/common/model/cardapio.dart';
 import 'package:bandecodex/features/home/container/home_container.dart';
+import 'package:bandecodex/features/repository/cardapio_provider.dart';
 import 'package:bandecodex/features/repository/cardapio_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class EditPage extends StatefulWidget {
-  final ICardapioRepository repository;
   final Cardapio cardapio;
-  const EditPage({super.key, required this.repository, required this.cardapio});
+  const EditPage({super.key, required this.cardapio});
 
   @override
   State<EditPage> createState() => _EditPageState();
 }
 
 class _EditPageState extends State<EditPage> {
+  late CardapioProvider repository;
   TextEditingController _dateController = TextEditingController();
   TextEditingController _principalController = TextEditingController();
   TextEditingController _guarnicaoController = TextEditingController();
@@ -30,6 +32,7 @@ class _EditPageState extends State<EditPage> {
   @override
   void initState() {
     // TODO: implement initState
+
     _dateController.text =
         DateFormat('yyyy-MM-dd').format(widget.cardapio.data);
     _principalController.text = widget.cardapio.principal;
@@ -44,6 +47,7 @@ class _EditPageState extends State<EditPage> {
 
   @override
   Widget build(BuildContext context) {
+    repository = context.watch<CardapioProvider>();
     DateTime date = DateTime.now();
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +77,8 @@ class _EditPageState extends State<EditPage> {
                         filled: true,
                         prefixIcon: Icon(Icons.calendar_today),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8)))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8)))),
                     onTap: () {
                       _selectDate();
                     },
@@ -186,13 +191,8 @@ class _EditPageState extends State<EditPage> {
                             suco: _sucoController.text,
                             guarnicao: _guarnicaoController.text,
                             sobremesa: _sobremesaController.text);
-                        widget.repository.updateCardapio(item).then((value) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeContainer(),
-                            ));
-                        });
+                        repository.updateCardapio(item);
+                        Navigator.pop(context);
                         _dateController.clear();
                         _principalController.clear();
                         _saladaController.clear();

@@ -1,10 +1,18 @@
 import 'package:bandecodex/features/home/container/home_container.dart';
+import 'package:bandecodex/features/repository/cardapio_provider.dart';
 import 'package:bandecodex/features/repository/cardapio_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) =>
+          CardapioProvider(repository: CardapioRepository(dio: Dio())),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
